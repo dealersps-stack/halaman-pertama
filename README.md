@@ -1,1 +1,44 @@
-# halaman-pertama
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Halaman Pertama Saya</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      color: #222;
+      text-align: center;
+    }
+    header {
+      background: #d6001c;
+      color: white;
+      padding: 40px 20px;
+    }
+    main {
+      padding: 30px 20px;
+    }
+    .tombol {
+      display: inline-block;
+      background: #25d366;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Halo, ini halaman pertama saya</h1>
+    <p>Belajar bikin website dari HP</p>
+  </header>
+  <main>
+    <p>Saya sedang belajar membuat halaman web.</p>
+    <a class="tombol" href="https://wa.me/6281234567890">Chat WhatsApp</a>
+  </main>
+</body>
+</html>
