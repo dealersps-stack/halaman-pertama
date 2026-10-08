@@ -118,11 +118,8 @@ function updWA(m,dp,nor,pt,rin,a){
   let n=$('no').value.replace(/\D/g,'');if(n[0]==='0')n='62'+n.slice(1);else if(n[0]==='8')n='62'+n;
   $('wa').href='https://wa.me/'+n+'?text='+encodeURIComponent(L.join('\n'));
 }
-const SUB=[["Revo Fit",18160000,1500000,1400000,100000,800000],["Revo X",19880000,1600000,1400000,200000,800000],["BeAT 8%",20360000,1700000,1400000,300000,800000,1],["BeAT",20360000,2100000,1600000,500000,800000],["Genio",21300000,2200000,1600000,600000,800000],["Supra X 125 Spoke",21350000,1800000,1400000,400000,800000],["Supra X 125 CW",22390000,1800000,1400000,400000,800000],["Scoopy",23940000,2400000,1600000,800000,800000],["Vario 125",25420000,2600000,1800000,800000,750000],["Vario Street 8%",27680000,2800000,1800000,1000000,1000000,1],["Vario 160",29010000,3000000,2000000,1000000,1000000],["Stylo",30020000,2500000,1200000,1300000,300000],["PCX",34960000,3500000,1900000,1600000,800000],["ADV",36900000,3700000,1900000,1800000,800000]];
 const nf=n=>n.toLocaleString('id-ID');
-$('ts').innerHTML='<tr><th>Tipe</th><th>OTR</th><th>DP PO</th><th>Subs</th><th>Bayar</th><th>Cash</th></tr>'+SUB.map(r=>`<tr class="${r[6]?'hl':''}"><td>${r[0]}</td><td class="mono">${nf(r[1])}</td><td class="mono">${nf(r[2])}</td><td class="mono">${nf(r[3])}</td><td class="mono bayar">${nf(r[4])}</td><td class="mono">${nf(r[5])}</td></tr>`).join('');
 $('q').oninput=grid;
-$('grid').onclick=e=>{const b=e.target.closest('.card');if(b)pick(+b.dataset.i)};
 $('ten').onclick=e=>{const b=e.target.closest('button');if(b){ten=+b.dataset.t;draw()}};
 $('tb').onclick=e=>{const r=e.target.closest('tr[data-r]');if(r){ri=+r.dataset.r;draw()}};
 $('rg').oninput=e=>{ri=+e.target.value;draw()};
