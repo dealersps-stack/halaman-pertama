@@ -109,7 +109,8 @@ function hitung(){
   $("hasil").innerHTML = "Cicilan ± " + rp(cicilan) + " / bulan<span>" + info + "</span>";
   pesan("Halo, saya tertarik promo Honda " + m.n + ". Simulasi saya: harga OTR " +
     rp(m.o) + ", DP " + rp(dp) + ", tenor " + t +
-    " bulan, cicilan sekitar " + rp(cicilan) + ". Bisa dibantu?");
+    " bulan, cicilan sekitar " + rp(cicilan) + ". Bisa dibantu?");document.querySelector("h1").textContent = "Promo Honda " + m.n;
+document.querySelector("section img").style.display = m.n.toLowerCase() === "vario 125 street" ? "block" : "none";
 }
 
 $("motor").onchange = function(){ isi(); hitung(); };
