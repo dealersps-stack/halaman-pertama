@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Promo Honda Vario 125 Street</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f4f4f4;color:#222}
+header{background:#d6001c;color:#fff;text-align:center;padding:40px 20px}
+header h1{margin:0 0 8px}
+section{padding:20px;max-width:480px;margin:auto}
+.kartu{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+h2{margin-top:0}
+ul{padding-left:20px;line-height:1.8}
+label{display:block;margin-top:12px;font-weight:bold}
+select{width:100%;padding:10px;margin-top:4px;font-size:16px;box-sizing:border-box;border:1px solid #ccc;border-radius:8px;background:#fff}
+button,.tombol{display:block;width:100%;box-sizing:border-box;text-align:center;border:0;border-radius:8px;padding:14px;margin-top:16px;font-size:16px;font-weight:bold;color:#fff;text-decoration:none}
+button{background:#d6001c}
+.wa{background:#25d366}
+#otr{margin-top:6px;color:#555;font-size:14px}
+#hasil{margin-top:16px;font-size:18px;font-weight:bold;text-align:center}
+#hasil span{display:block;font-size:14px;font-weight:normal;color:#555;margin-top:6px}
+small{color:#666}
+</style>
+</head>
+<body>
+<header>
+  <h1>Promo Honda Vario 125 Street</h1>
+  <p>DP ringan, cicilan terjangkau</p>
+</header>
+<section>
+<img src="images.jpeg" alt="Honda Vario 125 Street" style="width:100%;border-radius:12px;margin-bottom:16px">
+  <div class="kartu">
+    <h2>Keunggulan</h2>
+    <ul>
+      <li>Irit bahan bakar</li>
+      <li>Perawatan mudah dan murah</li>
+      <li>Garansi resmi Honda</li>
+      <li>Proses kredit cepat</li>
+    </ul>
+  </div>
+
+  <div class="kartu">
+    <h2>Simulasi Cicilan</h2>
+    <label>Pilih motor</label>
+    <select id="motor"></select>
+    <div id="otr"></div>
+    <label>Uang muka (DP)</label>
+    <select id="dp"></select>
+    <label>Tenor</label>
+    <select id="tenor"></select>
+    <button onclick="hitung()">Hitung Cicilan</button>
+    <div id="hasil">Memuat data motor...</div>
+    <small>Hanya estimasi. Angka resmi mengikuti leasing.</small>
+  </div>
+
+  <a id="wa" class="tombol wa" href="#">Tanya via WhatsApp</a>
+</section>
+
+<script>
+var NOMOR = "6285609734971";
+var KURANG = {11:25000, 23:25000};
+var D = null;
+function $(id){ return document.getElementById(id); }
+function rp(n){ return "Rp " + Math.round(n).toLocaleString("id-ID"); }
+function pesan(teks){
+  $("wa").href = "https://wa.me/" + NOMOR + "?text=" + encodeURIComponent(teks);
+}
+function motor(){ return D.m[+$("motor").value]; }
+
+function mulai(){
+  var h = "", v = 0;
+  for(var i = 0; i < D.m.length; i++){
+    h += '<option value="' + i + '">' + D.m[i].n + '</option>';
+    if(D.m[i].n.toLowerCase() === "vario 125 street") v = i;
+  }
+  $("motor").innerHTML = h;
+  $("motor").value = v;
+  isi();
+  hitung();
+}
+
+function isi(){
+  var m = motor(), h = "", t = "";
+  var tenorLama = $("tenor").value;
+  for(var i = 0; i < m.r.length; i++){
+    h += '<option value="' + i + '">' + rp(m.r[i][0] * 1000) + '</option>';
+  }
+  $("dp").innerHTML = h;
+  for(var j = 0; j < m.t.length; j++){
+    t += '<option value="' + m.t[j] + '">' + m.t[j] + ' bulan</option>';
+  }
+  $("tenor").innerHTML = t;
+  $("tenor").value = m.t.indexOf(+tenorLama) >= 0 ? tenorLama : 35;
+  $("otr").textContent = "Harga OTR: " + rp(m.o);
+}
+
+function hitung(){
+  if(!D) return;
+  var m = motor();
+  var r = m.r[+$("dp").value];
+  var t = +$("tenor").value;
+  var dp = r[0] * 1000;
+  var reguler = r[1 + m.t.indexOf(t)] * 1000;
+  var pot = Math.max(0, m.p - (KURANG[t] || 0));
+  var cicilan = reguler - pot;
+  var info = "OTR " + rp(m.o) + " | DP " + rp(dp) + " | " + t + " bulan";
+  if(pot > 0) info += "<br>Sudah termasuk potongan " + rp(pot) + " per bulan";
+  $("hasil").innerHTML = "Cicilan ± " + rp(cicilan) + " / bulan<span>" + info + "</span>";
+  pesan("Halo, saya tertarik promo Honda " + m.n + ". Simulasi saya: harga OTR " +
+    rp(m.o) + ", DP " + rp(dp) + ", tenor " + t +
+    " bulan, cicilan sekitar " + rp(cicilan) + ". Bisa dibantu?");
+}
+
+$("motor").onchange = function(){ isi(); hitung(); };
+$("dp").onchange = hitung;
+$("tenor").onchange = hitung;
+pesan("Halo, saya tertarik dengan promo Honda Vario 125 Street. Bisa info lebih lanjut?");
+
+fetch("kalkulator.html")
+  .then(function(r){ return r.text(); })
+  .then(function(teks){
+    var x = teks.match(/const D=(\{[\s\S]*?\});\s*const KURANG/);
+    D = JSON.parse(x[1]);
+    mulai();
+  })
+  .catch(function(){
+    $("hasil").textContent = "Data motor belum termuat. Pastikan file kalkulator.html ada di repo ini.";
+  });
+</script>
+</body>
+</html>
